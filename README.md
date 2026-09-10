@@ -9,7 +9,9 @@ Built on the [LEGO® Education Python API](https://github.com/LEGO/LEGOEducation
 
 ## Requirements
 
-- **Python 3.14 or newer** — required by `legoeducation`.
+- **Python 3.14** — what this project targets and tests on. Upstream's README specifies 3.14 as
+  the minimum, though the published wheel's own metadata accepts `>=3.11`; we follow upstream's
+  guidance rather than the looser metadata.
 - A machine where Python can reach **Bluetooth**. Chromebooks will not work: the Linux
   container Python runs in has no Bluetooth access.
 - LEGO Education hardware, charged, powered on, and broadcasting.
@@ -22,7 +24,7 @@ Built on the [LEGO® Education Python API](https://github.com/LEGO/LEGOEducation
 git clone <this-repo>
 cd "AI in Mobile Robotics"
 
-python -m venv .venv
+py -3.14 -m venv .venv
 .venv\Scripts\activate          # Windows;  source .venv/bin/activate on macOS/Linux
 
 pip install -r requirements.txt

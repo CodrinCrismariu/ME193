@@ -133,8 +133,22 @@ Most optional parameters are keyword-only (after `*`). Two that matter constantl
 
 - `blocking=True` (default) waits for the command to finish. `blocking=False` returns
   immediately — pair it with `device.done()` when you need to wait later.
-- `speed=le.UNCHANGED` (the default on many calls) reuses the previously set speed rather than
+- `speed` defaults to "unchanged": omitting it reuses the previously set speed rather than
   overriding it. Pass an explicit `speed=` when the value matters.
+
+  **Trap:** the docs render that default as `speed: int = UNCHANGED`, but `UNCHANGED` is an
+  internal of `legoeducation.device` whose value is `None` — it is **not** exported, so
+  `le.UNCHANGED` raises `AttributeError` and is absent from `constants.md`. To mean
+  "unchanged", omit the argument (or pass `speed=None`); never write `le.UNCHANGED`.
+  Verified against the installed package, v1.1.1.
+
+Docstring defaults in `function_description.md` are written with internal constant *names*
+that are not always importable. When a default's name is not listed in `constants.md`, check
+the installed package before using it as a value:
+
+```
+python -c "import legoeducation as le, inspect; print(inspect.signature(le.SingleMotor.motor_run_for_degrees))"
+```
 
 Negative speeds reverse direction, and there are also explicit direction constants
 (`le.MOTOR_MOVE_DIRECTION_*`, `le.MOVEMENT_DIRECTION_*`, `le.MOVEMENT_MOVE_DIRECTION_*`,
@@ -190,7 +204,18 @@ Card colors: `le.LEGO_COLOR_GREEN`, `_BLUE`, `_RED`, `_ORANGE`, `_YELLOW`, `_AZU
 `_PURPLE`, `_MAGENTA`.
 
 `search(timeout=..., card_color=..., card_serial=...)` lists what is broadcasting — use it to
-debug "which device is that?" before reaching for `connect()`.
+debug "which device is that?" before reaching for `connect()`. It returns `bleak` `BLEDevice`
+objects whose `.name` carries the card as an emoji and serial, e.g.
+`'🔴 1129 Single Motor'` — that is the fastest way to read a device's real card values.
+
+Two behaviors verified against hardware (package v1.1.1):
+
+- **`search()` returns `None`, not `[]`,** when nothing matches the filter. `len(...)` on the
+  result raises `TypeError`. Always guard with `if not found:` before iterating.
+- **The card filter is strict.** Wrong color, wrong serial, or either one alone all leave
+  `connected == False` — there is no fall back to first-found. `connect()` does not raise;
+  it logs `Could not find device matching Card color <n>, Card serial <s>` and returns, which
+  is exactly why checking `.connected` is mandatory.
 
 ### Batching
 

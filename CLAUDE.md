@@ -43,6 +43,8 @@ Invoke it for any LEGO hardware work.
 
 ## Environment
 
-`legoeducation` needs **Python >= 3.14** and Bluetooth Low Energy access from Python.
+This project targets **Python 3.14** (upstream's stated minimum; the wheel metadata itself
+says `>=3.11`). Use the repo venv: `.venv\Scripts\python.exe`, created with `py -3.14`.
+`legoeducation` needs Bluetooth Low Energy access from Python.
 Hardware must be charged, powered on, and broadcasting before connecting. Chromebooks
 cannot connect at all (their Linux container has no Bluetooth access).
