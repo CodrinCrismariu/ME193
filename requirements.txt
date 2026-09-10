@@ -1,0 +1,3 @@
+# LEGO(R) Education Python API -- requires Python >= 3.14
+# Docs: https://github.com/LEGO/LEGOEducation
+legoeducation
