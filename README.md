@@ -53,6 +53,7 @@ not to the repo.
 
 ```bash
 python examples/check_connection.py drive    # smoke test: connect, blink, beep, report
+python examples/move_single_motor.py 180     # Single Motor rotates out and back
 python examples/drive_square.py              # Double Motor drives a square
 python examples/color_reactive_drive.py      # Color Sensor gates the Double Motor
 ```
